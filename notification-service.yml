@@ -1,0 +1,48 @@
+server:
+  port: 8096
+
+spring:
+  application:
+    name: notification-service
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: notification_db
+#      username: root      # (optional if using auth)
+#      password: root      # (optional if using auth)
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.use.type.headers: false
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: java.util.LinkedHashMap
+
+
+logging:
+  api-logger-enabled: true
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+    instance:
+      prefer-ip-address: true
+
+custom:
+  kafka:
+    topic: cart-event
+    group-id: notification-group

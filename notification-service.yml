@@ -44,5 +44,8 @@ eureka:
 
 custom:
   kafka:
-    topic: cart-event
+    topics:
+      - cart-event
+      - order-event
+      - payment-event
     group-id: notification-group

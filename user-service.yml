@@ -45,14 +45,16 @@ eureka:
 resilience4j:
   circuitbreaker:
     instances:
-      authServiceCircuitBreaker:
+      userService:
         registerHealthIndicator: true
-        slidingWindowSize: 10          # Number of calls in the window
-        minimumNumberOfCalls: 5        # Min calls before it calculates failure rate
-        failureRateThreshold: 50       # % of failures to trip circuit
-        waitDurationInOpenState: 10s   # How long to wait before trying again
-        permittedNumberOfCallsInHalfOpenState: 3
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
         automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
 
   retry:
     instances:

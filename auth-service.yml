@@ -1,12 +1,14 @@
 server:
-  port: 8081
+  port: 8082
+  servlet:
+    context-path: /api
 
 spring:
   application:
     name: auth-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/auth_db
+    url: jdbc:postgresql://localhost:5432/auth-db
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
@@ -18,59 +20,56 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      repositories:
-        enabled: false
+  kafka:
+    bootstrap-servers: localhost:9092    # or kafka:9092 if inside Docker
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    admin:
+      auto-create: true
+    topic:
+      mail: mail-notification
+      web: web-notification
 
-  servlet:
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 50MB
+jwt:
+  refresh:
+    secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmNkZWYx
+    expiration: 36000
+  access:
+    secret: der5tghjiolo987ytgvcdswerdfgyu76t54e345rtyu8ijnbgtrdsxcdfew2
+    expiration: 288000
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: noreplyprojectmt@gmail.com
-    password: 'rgkq aasa zfrp tvpv'
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+logging:
+  level:
+    org.apache.kafka.clients.producer: WARN
 
+#eureka related configuration
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
     register-with-eureka: true
     fetch-registry: true
+  instance:
+    prefer-ip-address: true
 
-jwt:
-  access:
-    secret: der5tghjiolo987ytgvcdswerdfgyu76t54e345rtyu8ijnbgtrdsxcdfew2
-    expiration: 360
-  refresh:
-    secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmNkZWYx
-    expiration: 2880
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  info:
+    env:
+      enabled: true   # lets environment variables show up
 
-logging:
-  api-logger-enabled: true
-  level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html
+info:
+  app:
+    name: auth-service
+    description: Auth Security management service
+    version: 1.0.0
+  author: Sanket Pawar
 
 app:
-  redis:
-    enabled: false
-  frontend-url: http://localhost:3000
+  forgot-password-web-url: https://example.com/forgot-password

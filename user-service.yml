@@ -1,0 +1,92 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: user-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/profile-db
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    admin:
+      auto-create: true
+    topic:
+      web: web-notification
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      authServiceCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10          # Number of calls in the window
+        minimumNumberOfCalls: 5        # Min calls before it calculates failure rate
+        failureRateThreshold: 50       # % of failures to trip circuit
+        waitDurationInOpenState: 10s   # How long to wait before trying again
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+
+  retry:
+    instances:
+      authServiceRetry:
+        max-attempts: 3                # Total attempts (1 initial + 2 retries)
+        wait-duration: 2s              # Delay between retries
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        max-wait-duration: 10s
+
+  ratelimiter:
+    instances:
+      authServiceRateLimiter:
+        limit-for-period: 5            # Max calls per refresh period
+        limit-refresh-period: 1s       # Refresh period
+        timeout-duration: 0            # Wait time if limit exceeded
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  info:
+    env:
+      enabled: true   # lets environment variables show up
+
+info:
+  app:
+    name: user-service
+    description: User profile management service
+    version: 1.0.0
+  author: Sanket Pawar
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG

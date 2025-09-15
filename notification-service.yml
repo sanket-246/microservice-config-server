@@ -49,14 +49,6 @@ spring:
       mail.smtp.starttls.enable: true
       mail.debug: true
 
-jwt:
-  refresh:
-    secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmNkZWYx
-    expiration: 86400000   # 1 day in ms
-  access:
-    secret: der5tghjiolo987ytgvcdswerdfgyu76t54e345rtyu8ijnbgtrdsxcdfew2
-    expiration: 3600000     # 1 hour in ms
-
 app:
   frontend-url: http://localhost:3000
   forgot-password-web-url: http://localhost:3000/forgot-password

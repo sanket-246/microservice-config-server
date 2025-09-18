@@ -1,7 +1,6 @@
 server:
   port: 8082
-  # servlet:
-  #   context-path: /api
+  # 🚨 NO context-path here
 
 spring:
   application:
@@ -22,17 +21,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
-  kafka:
-    bootstrap-servers: localhost:9092    # or kafka:9092 if inside Docker
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    admin:
-      auto-create: true
-    topic:
-      mail: mail-notification
-      web: web-notification
-
 jwt:
   refresh:
     secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmNkZWYx
@@ -41,11 +29,6 @@ jwt:
     secret: der5tghjiolo987ytgvcdswerdfgyu76t54e345rtyu8ijnbgtrdsxcdfew2
     expiration: 288000
 
-logging:
-  level:
-    org.apache.kafka.clients.producer: WARN
-
-#eureka related configuration
 eureka:
   client:
     service-url:
@@ -54,6 +37,7 @@ eureka:
     fetch-registry: true
   instance:
     prefer-ip-address: true
+
 
 management:
   endpoints:

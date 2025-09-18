@@ -18,24 +18,24 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/api/auth/**      # Client calls /api/auth/...
-          filters:
-            - StripPrefix=1          # Strip /api before forwarding
+          # filters:
+            # - StripPrefix=1          # Strip /api before forwarding
 
         # Example: User Service
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/users/**
-          filters:
-            - StripPrefix=1
+          # filters:
+            # - StripPrefix=1
 
         # Example: Post Service
         - id: post-service
           uri: lb://post-service
           predicates:
             - Path=/api/posts/**
-          filters:
-            - StripPrefix=1
+          # filters:
+            # - StripPrefix=1
 
 eureka:
   client:

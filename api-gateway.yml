@@ -17,9 +17,6 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/api/auth/**
-          filters:
-            - StripPrefix=1   # remove "/api" before forwarding to auth-service
-
 
         - id: user-service
           uri: lb://user-service
@@ -29,7 +26,7 @@ spring:
         - id: post-service
           uri: lb://post-service
           predicates:
-            - Path=/api/posts/**
+            - Path=/api/post/**
 
 
 eureka:
@@ -45,3 +42,12 @@ logging:
   level:
     org.springframework.cloud.config: DEBUG
     org.springframework.boot.context.config: DEBUG
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+
+

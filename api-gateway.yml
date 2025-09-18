@@ -12,23 +12,6 @@ spring:
           enabled: true
           lower-case-service-id: true
 
-      routes:
-        - id: auth-service
-          uri: http://localhost:8082   # bypass Eureka
-          predicates:
-            - Path=/auth/**   # Matches exactly controller path
-          # No StripPrefix
-
-        - id: user-service
-          uri: lb://user-service
-          predicates:
-            - Path=/users/**
-
-        - id: post-service
-          uri: lb://post-service
-          predicates:
-            - Path=/posts/**
-
 eureka:
   client:
     service-url:

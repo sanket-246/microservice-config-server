@@ -13,24 +13,23 @@ spring:
           lower-case-service-id: true
 
       routes:
-        # Auth Service
         - id: auth-service
           uri: lb://auth-service
           predicates:
-            - Path=/api/auth/**   # Client calls this
-          # no StripPrefix, since auth-service already has /api
+            - Path=/api/auth/**
+          # filters:
+          #   - StripPrefix=1
 
-        # User Service
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/users/**
 
-        # Post Service
         - id: post-service
           uri: lb://post-service
           predicates:
             - Path=/api/posts/**
+
 
 eureka:
   client:

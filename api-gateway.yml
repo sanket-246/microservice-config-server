@@ -16,23 +16,18 @@ spring:
         - id: auth-service
           uri: lb://auth-service
           predicates:
-            - Path=/api/auth/**
-          filters:
-            - StripPrefix=1   # removes "/api"
+            - Path=/auth/**   # Matches exactly controller path
+          # No StripPrefix
 
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/api/users/**
-          filters:
-            - StripPrefix=1
+            - Path=/users/**
 
         - id: post-service
           uri: lb://post-service
           predicates:
-            - Path=/api/posts/**
-          filters:
-            - StripPrefix=1
+            - Path=/posts/**
 
 eureka:
   client:

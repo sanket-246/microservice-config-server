@@ -12,6 +12,31 @@ spring:
           enabled: true
           lower-case-service-id: true
 
+      routes:
+        # Auth Service
+        - id: auth-service
+          uri: lb://auth-service   # 'lb://' means load-balanced via Eureka
+          predicates:
+            - Path=/api/auth/**        # All requests starting with /auth
+          # filters:
+            # - StripPrefix=1        # Removes /auth before forwarding
+
+        # User Service
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+          # filters:
+            # - StripPrefix=1
+
+        # Post Service
+        - id: post-service
+          uri: lb://post-service
+          predicates:
+            - Path=/api/posts/**
+          # filters:
+            # - StripPrefix=1
+
 eureka:
   client:
     service-url:

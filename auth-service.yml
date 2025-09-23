@@ -72,3 +72,8 @@ info:
 
 app:
   forgot-password-web-url: https://example.com/forgot-password
+  
+google:
+  client-id: 46130405922-kfqnok9jv7c29a4p6jdtb1h0po1fd9ue.apps.googleusercontent.com
+  client-secret: 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
+  redirect-uri: https://oauth.pstmn.io/v1/callback
